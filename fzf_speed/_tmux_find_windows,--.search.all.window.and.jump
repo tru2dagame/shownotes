@@ -10,7 +10,7 @@ TARGET_SPEC="#{session_name}:#{window_id}:"
 LIST_DATA="#{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}"
 
 FZF_COMMAND() {
-  fzf -e -i --prompt="Select a window: " --info=default --layout=reverse --tiebreak=index
+  fzf -e -i --prompt="Select a window: " --info=default --layout=reverse --tiebreak=index --preview "echo -n {} | awk -F":" '{print \$1 \":\" \$2}' | xargs -I % tmux capture-pane -ep -t %"
 }
 
 # select window
