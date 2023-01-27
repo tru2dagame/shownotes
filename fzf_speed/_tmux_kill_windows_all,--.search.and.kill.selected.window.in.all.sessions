@@ -6,10 +6,12 @@ TARGET_SPEC="#{session_name}:#{window_id}:"
 LIST_DATA="#{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}"
 
 FZF_COMMAND() {
-  fzf -e -m -i --prompt="Select a window: " --info=default --layout=reverse --tiebreak=index --bind alt-enter:toggle-preview --preview "echo -n {} | awk -F":" '{print \$1 \":\" \$2}' | xargs -I % tmux capture-pane -ep -t %"
+  # fzf --query $1 -e -m -i --prompt="Select a window: " --info=default --layout=reverse --tiebreak=index --bind alt-enter:toggle-preview --preview "echo -n {} | awk -F":" '{print \$1 \":\" \$2}' | xargs -I % tmux capture-pane -ep -t %"
+  fzf -e -m -i --prompt="Select window(s) to kill: " --info=default --layout=reverse --tiebreak=index --bind alt-enter:toggle-preview --preview "echo -n {} | awk -F":" '{print \$1 \":\" \$2}' | xargs -I % tmux capture-pane -ep -t %"
 }
 
 # select window
+# fzf=$(tmux list-windows -a -F "$TARGET_SPEC $LIST_DATA" | FZF_COMMAND `tmux list-panes -F "$TARGET_SPEC"`) || exit
 fzf=$(tmux list-windows -a -F "$TARGET_SPEC $LIST_DATA" | FZF_COMMAND) || exit
 IFS='
 '
